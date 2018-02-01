@@ -33,8 +33,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     @Override
     public void onBindViewHolder(final ScheduleAdapter.ViewHolder holder, int position) {
         holder.txtTitle.setText(mResults.get(position).title());
-        holder.txtRelease.setText("In " + mResults.get(position).year());
-        holder.txtRating.setText("Rated: " + mResults.get(position).imdbRating());
+        holder.txtRelease.setText(String.format("In %d", mResults.get(position).year()));
+        holder.txtRating.setText(String.format("Rated: %s", mResults.get(position).imdbRating()));
 
         Picasso.with(mContext)
                 .load(mResults.get(position).poster())
@@ -51,19 +51,13 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtTitle, txtRating, txtRelease;
         ImageView imgPoster;
-        View itemView;
-
 
         ViewHolder(View itemView) {
             super(itemView);
-            this.itemView = itemView;
-
             txtTitle = itemView.findViewById(R.id.txt_title);
             txtRating = itemView.findViewById(R.id.txt_rating);
             txtRelease = itemView.findViewById(R.id.txt_year);
             imgPoster = itemView.findViewById(R.id.img_poster);
-
-
         }
     }
 

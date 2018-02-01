@@ -21,8 +21,6 @@ import com.example.admininstrator.graphqlpractice.model.ExtraMovieDetailsQuery;
 import com.example.admininstrator.graphqlpractice.model.SimilarMoviesQuery;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -31,9 +29,16 @@ import okhttp3.OkHttpClient;
 
 public class ExtraInfoFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
-
     private String title;
 
+    View v;
+    TextView txtPlot, txtGenres, txtTitle, txtSim0, txtSim1, txtSim2;
+    LinearLayout layoutSim0, layoutSim1;
+    ImageView imgSim0, imgSim1, imgSim2;
+    ProgressBar progressBar;
+    Button btnSimilar;
+    ApolloClient apolloClient;
+    OkHttpClient okHttpClient;
 
     public ExtraInfoFragment() {
         // Required empty public constructor
@@ -56,14 +61,6 @@ public class ExtraInfoFragment extends Fragment implements View.OnClickListener 
         }
     }
 
-    View v;
-    TextView txtPlot, txtGenres, txtTitle, txtSim0, txtSim1, txtSim2;
-    LinearLayout layoutSim0, layoutSim1;
-    ImageView imgSim0, imgSim1, imgSim2;
-    ProgressBar progressBar;
-    Button btnSimilar;
-    ApolloClient apolloClient;
-    OkHttpClient okHttpClient;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -110,6 +107,7 @@ public class ExtraInfoFragment extends Fragment implements View.OnClickListener 
             @Override
             public void onResponse(@Nonnull final Response<ExtraMovieDetailsQuery.Data> response) {
                 final StringBuilder builder = new StringBuilder();
+                //Get single movie entry. Need to add Null-Checks
                 for (String genres : response.data().movies().get(0).genres()) {
                     builder.append("⁍ ").append(genres).append("\n");
                 }
@@ -156,6 +154,8 @@ public class ExtraInfoFragment extends Fragment implements View.OnClickListener 
                 SimilarMoviesQuery.Data data = response.data();
                 final List<SimilarMoviesQuery.Similar> similarList = data.movies().get(0).similar();
 
+                //Response Always return 3 movie suggestions. No time to create adapters.
+                //Bad way
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

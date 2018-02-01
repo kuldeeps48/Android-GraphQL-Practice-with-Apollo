@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        //Launch More Details fragment on item click
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -54,18 +56,11 @@ public class MainActivity extends AppCompatActivity {
             public void onLongItemClick(View view, int position) {
             }
         }));
+
         getDataAndSetAdapter(recyclerView);
-
-
     }
 
-    @Override
-    public void onBackPressed() {
-        if (manager.getBackStackEntryCount() > 0) {
-            manager.popBackStack();
-        } else
-            super.onBackPressed();
-    }
+
 
     private void getDataAndSetAdapter(final RecyclerView recyclerView) {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -81,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(@Nonnull Response<MovieListQuery.Data> response) {
                 MovieListQuery.Data data = response.data();
+                assert data != null;
                 users = data.movies();
 
                 MainActivity.this.runOnUiThread(new Runnable() {
@@ -89,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
                         recyclerView.setAdapter(new ScheduleAdapter(users, getApplicationContext()));
                     }
                 });
-
             }
 
             @Override
@@ -99,4 +94,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    public void onBackPressed() {
+        if (manager.getBackStackEntryCount() > 0) {
+            manager.popBackStack();
+        } else
+            super.onBackPressed();
+    }
 }
