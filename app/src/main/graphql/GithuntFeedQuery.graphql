@@ -1,0 +1,25 @@
+query MovieListQuery($title: String!) {
+          movies(subString: $title, limit:30) {
+              title
+    		  year
+              imdbRating
+              poster
+          }
+      }
+
+query ExtraMovieDetailsQuery($title: String!) {
+          movies(subString: $title, limit:1) {
+              plot
+    		  genres
+          }
+      }
+
+query SimilarMoviesQuery($title: String!) {
+          movies(subString: $title, limit:1) {
+               similar {
+                    poster
+                    title
+               }
+          }
+}
+
